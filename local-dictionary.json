@@ -1,0 +1,106 @@
+[
+    {
+        "term": "glowering",
+        "partOfSpeech": "verb",
+        "definition": "To look or stare with sullen dislike, discontent, or anger.",
+        "example": "The coach stood on the sidelines, glowering at the referee after the controversial call.",
+        "synonyms": [
+            "scowling",
+            "glaring",
+            "frowning",
+            "sullen"
+        ]
+    },
+    {
+        "term": "esurient",
+        "partOfSpeech": "adjective",
+        "definition": "Hungry; greedy.",
+        "example": "The esurient children eagerly awaited the start of the holiday feast.",
+        "synonyms": [
+            "hungry",
+            "greedy",
+            "voracious",
+            "ravenous"
+        ]
+    },
+    {
+        "term": "justice",
+        "partOfSpeech": "noun",
+        "definition": "The quality of being just; righteousness, equitableness, or moral rightness.",
+        "example": "The protesters marched through the streets demanding justice for the victims.",
+        "synonyms": [
+            "fairness",
+            "equity",
+            "righteousness"
+        ]
+    },
+    {
+        "term": "beautiful",
+        "partOfSpeech": "adjective",
+        "definition": "Having qualities that give great pleasure or satisfaction to see, hear, think about, etc.",
+        "example": "The sunset over the ocean was one of the most beautiful sights I had ever seen.",
+        "synonyms": [
+            "lovely",
+            "gorgeous",
+            "stunning"
+        ]
+    },
+    {
+        "term": "aardvark",
+        "partOfSpeech": "noun",
+        "definition": "A nocturnal burrowing mammal with a long snout, sticky tongue, and powerful claws.",
+        "example": "The aardvark uses its claws to dig into termite mounds.",
+        "synonyms": [
+            "antbear"
+        ]
+    },
+    {
+        "term": "abacus",
+        "partOfSpeech": "noun",
+        "definition": "An ancient calculating tool consisting of beads on rods.",
+        "example": "The merchant used an abacus to total the bill.",
+        "synonyms": [
+            "counting frame"
+        ]
+    },
+    {
+        "term": "abalone",
+        "partOfSpeech": "noun",
+        "definition": "An edible sea snail with a shell lined with mother-of-pearl.",
+        "example": "The diver found a large abalone on the reef.",
+        "synonyms": [
+            "ear shell"
+        ]
+    },
+    {
+        "term": "abandon",
+        "partOfSpeech": "verb",
+        "definition": "To leave completely and finally; forsake utterly.",
+        "example": "They had to abandon the ship during the storm.",
+        "synonyms": [
+            "desert",
+            "forsake",
+            "quit"
+        ]
+    },
+    {
+        "term": "abbreviate",
+        "partOfSpeech": "verb",
+        "definition": "To shorten a word or phrase by omitting letters.",
+        "example": "You can abbreviate 'Street' to 'St.'",
+        "synonyms": [
+            "shorten",
+            "curtail"
+        ]
+    },
+    {
+        "term": "abdicate",
+        "partOfSpeech": "verb",
+        "definition": "To renounce or relinquish a throne, right, power, or claim.",
+        "example": "The king decided to abdicate in favor of his son.",
+        "synonyms": [
+            "resign",
+            "relinquish"
+        ]
+    }
+]

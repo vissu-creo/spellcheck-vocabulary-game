@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+debug_*.js
+test_*.js
+verify_*.js
+.gemini/
+.agent/
+start_game.bat
+server.py
