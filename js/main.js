@@ -38,65 +38,78 @@ inputElement.addEventListener('keydown', (e) => {
         if (input) {
             gameController.checkAnswer(input);
         }
-        return;
     }
+});
 
-    // Hint Mode Type-over Logic
-    if (inputElement.classList.contains('hint-mode')) {
-        const term = gameController.currentWord.term;
-        const cursorPosition = inputElement.selectionStart;
+// Robust Hint Mode Logic using state-based sync
+let lastHintValue = '';
 
-        // Helper to check if a position is a "revealed" character (fixed)
-        const isRevealed = (pos) => {
-            if (pos < 0 || pos >= term.length) return true;
-            return (pos === 0) ||
-                (term.length > 4 && pos === term.length - 1) ||
-                (term[pos] === ' ' || term[pos] === '-');
-        };
+inputElement.addEventListener('input', (e) => {
+    if (!inputElement.classList.contains('hint-mode')) return;
 
-        if (e.key === 'Backspace') {
-            e.preventDefault();
-            // Find the previous non-revealed position to clear
-            let posToClear = cursorPosition - 1;
-            while (posToClear >= 0 && isRevealed(posToClear)) {
-                posToClear--;
-            }
+    const term = gameController.currentWord.term;
+    const currentVal = inputElement.value;
+    const cursor = inputElement.selectionStart;
 
-            if (posToClear >= 0) {
-                const val = inputElement.value;
-                inputElement.value = val.substring(0, posToClear) + '_' + val.substring(posToClear + 1);
-                inputElement.setSelectionRange(posToClear, posToClear);
-            }
-            return;
+    // Helper to check if a position is a "revealed" character (fixed)
+    const isRevealed = (pos) => {
+        if (pos < 0 || pos >= term.length) return true;
+        return (pos === 0) ||
+            (term.length > 4 && pos === term.length - 1) ||
+            (term[pos] === ' ' || term[pos] === '-');
+    };
+
+    // Case 1: Length increased (Character added)
+    if (currentVal.length > term.length) {
+        const addedChar = currentVal[cursor - 1];
+        let posToFill = cursor - 1;
+
+        // Find the next available underscore to fill
+        // If the user typed at a revealed position, move to the next underscore
+        while (posToFill < term.length && isRevealed(posToFill)) {
+            posToFill++;
         }
 
-        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            e.preventDefault();
-            // Find the next non-revealed position to fill
-            let posToFill = cursorPosition;
-            while (posToFill < term.length && isRevealed(posToFill)) {
-                posToFill++;
-            }
+        if (posToFill < term.length) {
+            const newVal = lastHintValue.substring(0, posToFill) + addedChar + lastHintValue.substring(posToFill + 1);
+            inputElement.value = newVal;
+            lastHintValue = newVal;
 
-            if (posToFill < term.length) {
-                const val = inputElement.value;
-                inputElement.value = val.substring(0, posToFill) + e.key + val.substring(posToFill + 1);
-
-                // Move cursor to the next available slot
-                let nextPos = posToFill + 1;
-                while (nextPos < term.length && isRevealed(nextPos)) {
-                    nextPos++;
-                }
-                inputElement.setSelectionRange(nextPos, nextPos);
+            // Move cursor to the next available slot
+            let nextPos = posToFill + 1;
+            while (nextPos < term.length && isRevealed(nextPos)) {
+                nextPos++;
             }
+            inputElement.setSelectionRange(nextPos, nextPos);
+        } else {
+            // No more underscores to fill, restore last value
+            inputElement.value = lastHintValue;
+            inputElement.setSelectionRange(lastHintValue.length, lastHintValue.length);
+        }
+    }
+    // Case 2: Length decreased (Character deleted)
+    else if (currentVal.length < term.length) {
+        let posToClear = cursor; // The position where the char was removed
+
+        // Find the previous non-revealed position to clear
+        while (posToClear >= 0 && isRevealed(posToClear)) {
+            posToClear--;
         }
 
-        // Allow navigation but keep it simple
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Tab') {
-            // Standard behavior
-        } else if (e.key !== 'Enter') {
-            // e.preventDefault();
+        if (posToClear >= 0) {
+            const newVal = lastHintValue.substring(0, posToClear) + '_' + lastHintValue.substring(posToClear + 1);
+            inputElement.value = newVal;
+            lastHintValue = newVal;
+            inputElement.setSelectionRange(posToClear, posToClear);
+        } else {
+            // Cannot clear revealed chars, restore last value
+            inputElement.value = lastHintValue;
+            inputElement.setSelectionRange(cursor, cursor);
         }
+    }
+    // Case 3: Length is same (e.g., replacement or selection change)
+    else {
+        lastHintValue = currentVal;
     }
 });
 
@@ -106,6 +119,8 @@ playAudioBtn.addEventListener('click', () => {
 
 hintBtn.addEventListener('click', () => {
     gameController.handleHint();
+    // Initialize lastHintValue immediately after UI update
+    lastHintValue = inputElement.value;
 });
 
 // Delegate event for dynamic "Next Word" button
