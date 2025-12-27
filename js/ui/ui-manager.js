@@ -26,9 +26,10 @@ export class UIManager {
         this.resultsContainer.classList.add('hidden');
         this.resultsContainer.innerHTML = '';
         this.inputElement.value = '';
-        this.inputElement.focus();
+        this.inputElement.disabled = false;
         this.inputElement.classList.remove('shake');
         this.inputElement.classList.remove('hint-mode');
+        this.inputElement.focus();
     }
 
     displayResult(result, targetWord, isCorrect) {
@@ -78,7 +79,8 @@ export class UIManager {
             this.inputElement.classList.remove('shake');
         }
 
-        // Disable hint button once result is shown
+        // Disable input and hint button once result is shown
+        this.inputElement.disabled = true;
         this.disableHintButton();
     }
 
@@ -115,5 +117,4 @@ export class UIManager {
         this.hintButton.disabled = false;
         this.hintButton.style.opacity = '1';
     }
-
 }
