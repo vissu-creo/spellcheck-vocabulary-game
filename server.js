@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT || 8095;
 
 // Session-based word tracking to prevent repetition
 const seenWords = new Set();
@@ -77,13 +77,26 @@ const server = http.createServer(async (req, res) => {
 
 async function handleRandomWord(req, res) {
     try {
+        const parsedUrl = url.parse(req.url, true);
+        const level = parsedUrl.query.level || 'easy';
+
+        // Frequency thresholds (per million words)
+        const thresholds = {
+            easy: { min: 50, max: 1000000 },
+            medium: { min: 5, max: 50 },
+            hard: { min: 0, max: 5 }
+        };
+
+        const target = thresholds[level] || thresholds.easy;
+
         // 1. Try to fetch from APIs first
         try {
             const alphabet = 'abcdefghijklmnopqrstuvwxyz';
             const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-            const datamuseUrl = `https://api.datamuse.com/words?sp=${randomLetter}*&max=100&md=f`;
+            // Fetch more words to increase chances of finding one in the frequency range
+            const datamuseUrl = `https://api.datamuse.com/words?sp=${randomLetter}*&max=200&md=f`;
 
-            console.log(`Fetching from Datamuse: ${datamuseUrl}`);
+            console.log(`Fetching from Datamuse (Level: ${level}): ${datamuseUrl}`);
 
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -93,10 +106,19 @@ async function handleRandomWord(req, res) {
 
             if (datamuseResponse.ok) {
                 const datamuseData = await datamuseResponse.json();
+
                 let candidates = datamuseData
-                    .filter(item => item.word && /^[a-zA-Z]+$/.test(item.word))
-                    .map(item => item.word)
-                    .filter(word => !seenWords.has(word.toLowerCase()));
+                    .filter(item => {
+                        if (!item.word || !/^[a-zA-Z]+$/.test(item.word)) return false;
+                        if (seenWords.has(item.word.toLowerCase())) return false;
+
+                        // Extract frequency from tags (e.g., "f:12.345")
+                        const fTag = item.tags ? item.tags.find(t => t.startsWith('f:')) : null;
+                        const freq = fTag ? parseFloat(fTag.split(':')[1]) : 0;
+
+                        return freq >= target.min && freq <= target.max;
+                    })
+                    .map(item => item.word);
 
                 if (candidates.length > 0) {
                     // Shuffle candidates
@@ -106,7 +128,7 @@ async function handleRandomWord(req, res) {
                     }
 
                     // Try to find a word with a definition
-                    for (const word of candidates.slice(0, 10)) {
+                    for (const word of candidates.slice(0, 15)) {
                         try {
                             const dictUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
                             const dictController = new AbortController();
@@ -124,7 +146,7 @@ async function handleRandomWord(req, res) {
                                     if (!seenWords.has(term)) {
                                         seenWords.add(term);
 
-                                        // Fetch extra synonyms from Datamuse for better coverage
+                                        // Fetch extra synonyms from Datamuse
                                         let extraSynonyms = [];
                                         try {
                                             const synUrl = `https://api.datamuse.com/words?rel_syn=${term}&max=10`;
@@ -135,14 +157,14 @@ async function handleRandomWord(req, res) {
                                             }
                                         } catch (e) { console.warn("Datamuse syn fetch failed", e.message); }
 
-                                        // Check local dictionary for a better example fallback
+                                        // Check local dictionary for fallback
                                         let localEntry = null;
                                         try {
                                             const localData = JSON.parse(fs.readFileSync('./local-dictionary.json', 'utf8'));
                                             localEntry = localData.find(e => e.term.toLowerCase() === term);
                                         } catch (e) { console.warn("Local dict read failed", e.message); }
 
-                                        console.log(`API Success: ${term} (Total seen: ${seenWords.size})`);
+                                        console.log(`API Success: ${term} (Level: ${level}, Total seen: ${seenWords.size})`);
                                         return sendWordResponse(res, entry, extraSynonyms, localEntry);
                                     }
                                 }
@@ -156,23 +178,32 @@ async function handleRandomWord(req, res) {
         }
 
         // 2. Fallback to local dictionary
-        console.log("Using local dictionary fallback...");
+        console.log(`Using local dictionary fallback for level: ${level}...`);
         const localData = JSON.parse(fs.readFileSync('./local-dictionary.json', 'utf8'));
 
-        // Filter out seen words from local data
-        let availableLocal = localData.filter(entry => !seenWords.has(entry.term.toLowerCase()));
+        // Filter by level and seen status
+        let availableLocal = localData.filter(entry =>
+            entry.level === level && !seenWords.has(entry.term.toLowerCase())
+        );
 
-        // If all local words are seen, reset the set (infinite loop)
+        // If no words left for this level, reset seen words for this level
         if (availableLocal.length === 0) {
-            console.log("Local dictionary exhausted. Resetting seen words for this session.");
-            seenWords.clear();
-            availableLocal = localData;
+            console.log(`Local dictionary exhausted for level ${level}. Resetting seen words for this level.`);
+            localData.forEach(e => {
+                if (e.level === level) seenWords.delete(e.term.toLowerCase());
+            });
+            availableLocal = localData.filter(entry => entry.level === level);
+        }
+
+        // If still no words (e.g. level not found), fallback to any unseen word
+        if (availableLocal.length === 0) {
+            availableLocal = localData.filter(entry => !seenWords.has(entry.term.toLowerCase()));
         }
 
         const randomEntry = availableLocal[Math.floor(Math.random() * availableLocal.length)];
         seenWords.add(randomEntry.term.toLowerCase());
 
-        console.log(`Local Success: ${randomEntry.term} (Total seen: ${seenWords.size})`);
+        console.log(`Local Success: ${randomEntry.term} (Level: ${level}, Total seen: ${seenWords.size})`);
 
         res.writeHead(200, {
             'Content-Type': 'application/json',
@@ -284,7 +315,7 @@ server.on('error', (e) => {
     }
 });
 
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
-    console.log(`API Endpoint: http://localhost:${PORT}/api/random-word`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running at http://0.0.0.0:${PORT}/`);
+    console.log(`API Endpoint: http://0.0.0.0:${PORT}/api/random-word`);
 });

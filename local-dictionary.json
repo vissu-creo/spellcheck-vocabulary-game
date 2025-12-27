@@ -9,7 +9,8 @@
             "glaring",
             "frowning",
             "sullen"
-        ]
+        ],
+        "level": "hard"
     },
     {
         "term": "esurient",
@@ -21,7 +22,8 @@
             "greedy",
             "voracious",
             "ravenous"
-        ]
+        ],
+        "level": "hard"
     },
     {
         "term": "justice",
@@ -32,7 +34,8 @@
             "fairness",
             "equity",
             "righteousness"
-        ]
+        ],
+        "level": "medium"
     },
     {
         "term": "beautiful",
@@ -43,7 +46,8 @@
             "lovely",
             "gorgeous",
             "stunning"
-        ]
+        ],
+        "level": "medium"
     },
     {
         "term": "aardvark",
@@ -52,7 +56,8 @@
         "example": "The aardvark uses its claws to dig into termite mounds.",
         "synonyms": [
             "antbear"
-        ]
+        ],
+        "level": "hard"
     },
     {
         "term": "abacus",
@@ -61,7 +66,8 @@
         "example": "The merchant used an abacus to total the bill.",
         "synonyms": [
             "counting frame"
-        ]
+        ],
+        "level": "hard"
     },
     {
         "term": "abalone",
@@ -70,7 +76,8 @@
         "example": "The diver found a large abalone on the reef.",
         "synonyms": [
             "ear shell"
-        ]
+        ],
+        "level": "hard"
     },
     {
         "term": "abandon",
@@ -81,7 +88,8 @@
             "desert",
             "forsake",
             "quit"
-        ]
+        ],
+        "level": "medium"
     },
     {
         "term": "abbreviate",
@@ -91,7 +99,8 @@
         "synonyms": [
             "shorten",
             "curtail"
-        ]
+        ],
+        "level": "medium"
     },
     {
         "term": "abdicate",
@@ -101,6 +110,40 @@
         "synonyms": [
             "resign",
             "relinquish"
-        ]
+        ],
+        "level": "hard"
+    },
+    {
+        "term": "house",
+        "partOfSpeech": "noun",
+        "definition": "A building in which people live.",
+        "example": "They bought a new house in the suburbs.",
+        "synonyms": [
+            "home",
+            "residence"
+        ],
+        "level": "easy"
+    },
+    {
+        "term": "water",
+        "partOfSpeech": "noun",
+        "definition": "A clear, colorless, odorless, tasteless liquid.",
+        "example": "Would you like a glass of water?",
+        "synonyms": [
+            "liquid",
+            "h2o"
+        ],
+        "level": "easy"
+    },
+    {
+        "term": "friend",
+        "partOfSpeech": "noun",
+        "definition": "A person whom one knows and with whom one has a bond of mutual affection.",
+        "example": "She has been my best friend since childhood.",
+        "synonyms": [
+            "companion",
+            "buddy"
+        ],
+        "level": "easy"
     }
 ]

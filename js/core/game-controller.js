@@ -18,8 +18,8 @@ export class GameController {
         this.uiManager.showLoading(true);
 
         try {
-            // Fetch a random word directly from the proxy
-            const wordData = await this.dictionaryService.fetchRandomWord();
+            // Fetch a random word directly from the proxy with the selected level
+            const wordData = await this.dictionaryService.fetchRandomWord(this.gameState.level);
 
             if (!wordData) {
                 throw new Error("Failed to fetch word from proxy.");

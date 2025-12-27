@@ -27,7 +27,17 @@
                     </svg>
                 </div>
                 <h2>Ready to Expand Your Vocabulary?</h2>
-                <p>Listen to the word, type it correctly, and learn its definition.</p>
+                <p class="instruction-text">Listen to the word, type it correctly, and learn its definition.</p>
+
+                <div class="level-selection">
+                    <p class="selection-label">Choose your challenge</p>
+                    <div class="level-buttons">
+                        <button class="level-btn active" data-level="easy">Easy</button>
+                        <button class="level-btn" data-level="medium">Medium</button>
+                        <button class="level-btn" data-level="hard">Hard</button>
+                    </div>
+                </div>
+
                 <button id="start-game-btn" class="primary-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -84,7 +94,6 @@
             </div>
         </div>
     </main>
-    </div>
 
     <script type="module" src="js/main.js?v=2"></script>
 </body>

@@ -25,6 +25,10 @@ const startBtn = document.getElementById('start-game-btn');
 
 // Start Game Flow
 startBtn.addEventListener('click', () => {
+    // Set level in game state
+    const selectedLevel = uiManager.getSelectedLevel();
+    gameState.setLevel(selectedLevel);
+
     startScreen.classList.add('hidden');
     gameArea.classList.remove('hidden');
     gameController.startRound();

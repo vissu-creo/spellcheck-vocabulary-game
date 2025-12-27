@@ -7,9 +7,9 @@ export class DictionaryService {
      * Fetches a single random word with details from the local proxy.
      * @returns {Promise<Object|null>} - Formatted word object or null if failed
      */
-    async fetchRandomWord() {
+    async fetchRandomWord(level = 'easy') {
         try {
-            const response = await fetch(this.proxyUrl);
+            const response = await fetch(`${this.proxyUrl}?level=${level}`);
             if (!response.ok) throw new Error('Proxy API failed');
 
             const data = await response.json();

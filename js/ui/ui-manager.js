@@ -5,6 +5,22 @@ export class UIManager {
         this.inputElement = document.getElementById('word-input');
         this.loadingOverlay = document.getElementById('loading-overlay');
         this.hintButton = document.getElementById('hint-btn');
+        this.levelButtons = document.querySelectorAll('.level-btn');
+        this.initLevelSelection();
+    }
+
+    initLevelSelection() {
+        this.levelButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.levelButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    }
+
+    getSelectedLevel() {
+        const activeBtn = document.querySelector('.level-btn.active');
+        return activeBtn ? activeBtn.dataset.level : 'easy';
     }
 
     showLoading(isLoading) {
