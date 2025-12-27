@@ -8,7 +8,7 @@ import { DictionaryService } from './services/dictionary-service.js?v=2';
 
 // Initialize Components
 const dictionaryService = new DictionaryService(dictionary);
-const spellEngine = new SpellEngine(dictionary); // Keep for fallback or analysis
+const spellEngine = new SpellEngine(dictionary);
 const gameState = new GameState();
 const uiManager = new UIManager();
 const audioManager = new AudioManager();
@@ -17,6 +17,7 @@ const gameController = new GameController(dictionaryService, audioManager, spell
 // DOM Elements
 const inputElement = document.getElementById('word-input');
 const playAudioBtn = document.getElementById('play-audio-btn');
+const hintBtn = document.getElementById('hint-btn');
 const resultsContainer = document.getElementById('results-container');
 const startScreen = document.getElementById('start-screen');
 const gameArea = document.getElementById('game-area');
@@ -24,15 +25,8 @@ const startBtn = document.getElementById('start-game-btn');
 
 // Start Game Flow
 startBtn.addEventListener('click', () => {
-    // 1. Hide Start Screen
     startScreen.classList.add('hidden');
     gameArea.classList.remove('hidden');
-
-    // 2. Initialize Audio (Unlock AudioContext)
-    // Just playing a silent sound or resuming context if we had one
-    // The AudioManager uses speechSynthesis which is usually unlocked by click
-
-    // 3. Start the Game
     gameController.startRound();
     inputElement.focus();
 });
@@ -49,6 +43,10 @@ inputElement.addEventListener('keydown', (e) => {
 
 playAudioBtn.addEventListener('click', () => {
     gameController.playAudio();
+});
+
+hintBtn.addEventListener('click', () => {
+    gameController.handleHint();
 });
 
 // Delegate event for dynamic "Next Word" button

@@ -12,9 +12,11 @@ export class AudioManager {
 
     loadVoices() {
         const voices = this.synth.getVoices();
-        // Prefer a clear English voice
-        this.voice = voices.find(voice => voice.name.includes('Google US English')) ||
-            voices.find(voice => voice.lang === 'en-US') ||
+        // Priority: Google US English -> Microsoft Aria -> Any English US -> Any English -> First available
+        this.voice = voices.find(v => v.name === 'Google US English') ||
+            voices.find(v => v.name.includes('Aria')) ||
+            voices.find(v => v.lang === 'en-US') ||
+            voices.find(v => v.lang.startsWith('en')) ||
             voices[0];
     }
 

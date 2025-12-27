@@ -30,6 +30,7 @@ export class GameController {
 
             // Update UI
             this.uiManager.prepareRound();
+            this.uiManager.resetHintButton();
 
             // Speak (Auto-play)
             setTimeout(() => this.playAudio(), 500); // Small delay for UI transition
@@ -84,6 +85,18 @@ export class GameController {
         this.uiManager.displayResult(result, this.currentWord, isCorrect);
         this.uiManager.updateStats(this.gameState.getStats());
 
+        // Wire up the result speaker button
+        const resultSpeakerBtn = document.getElementById('result-play-audio-btn');
+        if (resultSpeakerBtn) {
+            resultSpeakerBtn.onclick = () => this.playAudio();
+        }
+
         this.isRoundActive = false;
+    }
+
+    handleHint() {
+        if (this.isRoundActive && this.currentWord) {
+            this.uiManager.showHint(this.currentWord);
+        }
     }
 }

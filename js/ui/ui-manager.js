@@ -4,6 +4,7 @@ export class UIManager {
         this.scoreElement = document.getElementById('current-score');
         this.inputElement = document.getElementById('word-input');
         this.loadingOverlay = document.getElementById('loading-overlay');
+        this.hintButton = document.getElementById('hint-btn');
     }
 
     showLoading(isLoading) {
@@ -47,7 +48,14 @@ export class UIManager {
                 </div>
                 
                 <div class="word-details">
-                    <h3 class="word-title">${entry.term} <span class="part-of-speech">${entry.partOfSpeech || 'word'}</span></h3>
+                    <h3 class="word-title">
+                        ${entry.term}
+                        <button class="result-speaker-btn" id="result-play-audio-btn" title="Listen again">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                        </button>
+                        <span class="part-of-speech">${entry.partOfSpeech || 'word'}</span>
+                    </h3>
+                    ${entry.phonetic ? `<span class="phonetic">${entry.phonetic}</span>` : ''}
                     <p class="definition">${entry.definition}</p>
                     
                     <div class="meta-info">
@@ -71,6 +79,35 @@ export class UIManager {
         } else {
             this.inputElement.classList.remove('shake');
         }
+    }
+
+    showHint(word) {
+        const term = word.term;
+        let hint = '';
+
+        // Reveal first letter and last letter if long enough, otherwise just first
+        for (let i = 0; i < term.length; i++) {
+            if (i === 0 || (term.length > 4 && i === term.length - 1)) {
+                hint += term[i];
+            } else if (term[i] === ' ' || term[i] === '-') {
+                hint += term[i];
+            } else {
+                hint += '_';
+            }
+            if (i < term.length - 1) hint += ' ';
+        }
+
+        this.inputElement.value = hint;
+        this.inputElement.focus();
+
+        // Disable hint button after use for this word
+        this.hintButton.disabled = true;
+        this.hintButton.style.opacity = '0.5';
+    }
+
+    resetHintButton() {
+        this.hintButton.disabled = false;
+        this.hintButton.style.opacity = '1';
     }
 
 }
