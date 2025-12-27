@@ -1,28 +1,19 @@
 :root {
     /* Palette: Modern Educational (Warm & Clean) */
     --bg-main: #f8f9fa;
-    /* Soft Gray/White */
     --bg-card: #ffffff;
 
     --text-primary: #1e293b;
-    /* Slate 800 */
     --text-secondary: #64748b;
-    /* Slate 500 */
 
     --accent-primary: #4f46e5;
-    /* Indigo 600 - Professional Blue */
     --accent-secondary: #818cf8;
-    /* Indigo 400 */
 
     --status-success: #10b981;
-    /* Emerald 500 */
     --status-error: #ef4444;
-    /* Red 500 */
     --status-idiom: #f59e0b;
-    /* Amber 500 */
 
     --border-subtle: #e2e8f0;
-    /* Slate 200 */
 
     /* Typography */
     --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -97,163 +88,128 @@ body::before {
     }
 }
 
-.app-container {
+.interaction-area {
     width: 100%;
-    max-width: 700px;
+    max-width: 600px;
     padding: var(--spacing-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
-/* Header */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid var(--border-subtle);
-}
-
-.logo h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-}
-
-.logo h1 span {
-    color: var(--accent-primary);
-}
-
-.stats-bar {
-    display: flex;
-    gap: var(--spacing-md);
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.stat-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-}
-
-.stat-value {
-    font-weight: 700;
-    color: var(--text-primary);
-    font-size: 1.1rem;
-}
-
-/* Input Area */
-.input-wrapper {
     position: relative;
+}
+
+.word-card {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
     box-shadow: var(--shadow-soft);
-    padding: var(--spacing-sm);
-    transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid rgba(255, 255, 255, 0.5);
+    text-align: center;
 }
 
-.input-wrapper:focus-within {
-    box-shadow: var(--shadow-hover);
-    border-color: var(--accent-secondary);
-    transform: translateY(-2px);
+/* Audio & Hint Controls */
+.audio-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
 }
 
-.input-group {
-    position: relative;
-    width: 100%;
+.controls-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-#word-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    padding: 12px 0;
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    outline: none;
-    transition: all 0.3s ease;
-    font-family: 'Outfit', sans-serif;
-}
-
-.hint-btn {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--accent-primary);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.hint-btn:hover {
-    background: rgba(255, 255, 255, 0.8);
-    transform: scale(1.1);
-    color: var(--accent-secondary);
-}
-
-.hint-btn:active {
-    transform: scale(0.95);
+    gap: 1.5rem;
 }
 
 .audio-btn {
-    position: absolute;
-    right: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
     background: var(--bg-main);
     border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    width: 2.5rem;
-    height: 2.5rem;
+    color: var(--accent-primary);
+    width: 4.5rem;
+    height: 4.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--shadow-soft);
 }
 
 .audio-btn:hover {
     background: var(--accent-primary);
     color: white;
+    transform: scale(1.1);
+    box-shadow: var(--shadow-hover);
+}
+
+.hint-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--border-subtle);
+    color: var(--accent-primary);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.hint-btn:hover {
+    background: white;
+    transform: scale(1.1);
+    color: var(--accent-secondary);
+}
+
+.hint-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.audio-hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* Input Group */
+.input-group {
+    position: relative;
+    margin-bottom: var(--spacing-sm);
+}
+
+#word-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-subtle);
+    padding: 1rem 0;
+    font-size: 2rem;
+    text-align: center;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#word-input:focus {
     border-color: var(--accent-primary);
 }
 
 .input-hint {
-    position: absolute;
-    bottom: -1.5rem;
-    right: 1rem;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    opacity: 0.8;
+    margin-top: 0.5rem;
 }
 
 /* Results Card */
 .results-container {
-    min-height: 100px;
+    margin-top: var(--spacing-lg);
 }
 
 .result-card {
@@ -265,6 +221,7 @@ body::before {
     box-shadow: var(--shadow-soft);
     border: 1px solid rgba(255, 255, 255, 0.5);
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: left;
 }
 
 @keyframes slideUp {
@@ -315,7 +272,6 @@ body::before {
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
-    vertical-align: middle;
     margin-left: 8px;
 }
 
@@ -331,7 +287,6 @@ body::before {
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     color: var(--text-secondary);
-    vertical-align: middle;
     margin-left: 0.5rem;
     font-weight: 400;
 }
@@ -340,7 +295,6 @@ body::before {
     font-family: var(--font-mono);
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-top: -5px;
     margin-bottom: 10px;
     display: block;
 }
@@ -443,16 +397,6 @@ body::before {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
     background: var(--accent-secondary);
-}
-
-/* Game Area */
-.game-area {
-    width: 100%;
-    position: relative;
-}
-
-.game-area.hidden {
-    display: none;
 }
 
 /* Loading Overlay */
