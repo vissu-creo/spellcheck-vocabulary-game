@@ -76,19 +76,12 @@ export class GameController {
 
         const result = { isCorrect, status: isCorrect ? 'correct' : 'incorrect' };
 
-        // Update Game State
-        if (isCorrect) {
-            this.gameState.addScore(10); // Fixed points
-        }
-
         // Show Results
         this.uiManager.displayResult(result, this.currentWord, isCorrect);
-        this.uiManager.updateStats(this.gameState.getStats());
 
-        // Wire up the result speaker button
-        const resultSpeakerBtn = document.getElementById('result-play-audio-btn');
-        if (resultSpeakerBtn) {
-            resultSpeakerBtn.onclick = () => this.playAudio();
+        if (isCorrect) {
+            this.gameState.updateScore(10);
+            this.uiManager.updateStats(this.gameState.getStats());
         }
 
         this.isRoundActive = false;

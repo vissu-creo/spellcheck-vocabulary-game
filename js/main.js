@@ -38,6 +38,65 @@ inputElement.addEventListener('keydown', (e) => {
         if (input) {
             gameController.checkAnswer(input);
         }
+        return;
+    }
+
+    // Hint Mode Type-over Logic
+    if (inputElement.classList.contains('hint-mode')) {
+        const term = gameController.currentWord.term;
+        const cursorPosition = inputElement.selectionStart;
+
+        // Helper to check if a position is a "revealed" character (fixed)
+        const isRevealed = (pos) => {
+            if (pos < 0 || pos >= term.length) return true;
+            return (pos === 0) ||
+                (term.length > 4 && pos === term.length - 1) ||
+                (term[pos] === ' ' || term[pos] === '-');
+        };
+
+        if (e.key === 'Backspace') {
+            e.preventDefault();
+            // Find the previous non-revealed position to clear
+            let posToClear = cursorPosition - 1;
+            while (posToClear >= 0 && isRevealed(posToClear)) {
+                posToClear--;
+            }
+
+            if (posToClear >= 0) {
+                const val = inputElement.value;
+                inputElement.value = val.substring(0, posToClear) + '_' + val.substring(posToClear + 1);
+                inputElement.setSelectionRange(posToClear, posToClear);
+            }
+            return;
+        }
+
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            // Find the next non-revealed position to fill
+            let posToFill = cursorPosition;
+            while (posToFill < term.length && isRevealed(posToFill)) {
+                posToFill++;
+            }
+
+            if (posToFill < term.length) {
+                const val = inputElement.value;
+                inputElement.value = val.substring(0, posToFill) + e.key + val.substring(posToFill + 1);
+
+                // Move cursor to the next available slot
+                let nextPos = posToFill + 1;
+                while (nextPos < term.length && isRevealed(nextPos)) {
+                    nextPos++;
+                }
+                inputElement.setSelectionRange(nextPos, nextPos);
+            }
+        }
+
+        // Allow navigation but keep it simple
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Tab') {
+            // Standard behavior
+        } else if (e.key !== 'Enter') {
+            // e.preventDefault();
+        }
     }
 });
 

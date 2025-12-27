@@ -28,6 +28,7 @@ export class UIManager {
         this.inputElement.value = '';
         this.inputElement.focus();
         this.inputElement.classList.remove('shake');
+        this.inputElement.classList.remove('hint-mode');
     }
 
     displayResult(result, targetWord, isCorrect) {
@@ -50,9 +51,6 @@ export class UIManager {
                 <div class="word-details">
                     <h3 class="word-title">
                         ${entry.term}
-                        <button class="result-speaker-btn" id="result-play-audio-btn" title="Listen again">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                        </button>
                         <span class="part-of-speech">${entry.partOfSpeech || 'word'}</span>
                     </h3>
                     ${entry.phonetic ? `<span class="phonetic">${entry.phonetic}</span>` : ''}
@@ -79,6 +77,14 @@ export class UIManager {
         } else {
             this.inputElement.classList.remove('shake');
         }
+
+        // Disable hint button once result is shown
+        this.disableHintButton();
+    }
+
+    disableHintButton() {
+        this.hintButton.disabled = true;
+        this.hintButton.style.opacity = '0.5';
     }
 
     showHint(word) {
@@ -94,10 +100,10 @@ export class UIManager {
             } else {
                 hint += '_';
             }
-            if (i < term.length - 1) hint += ' ';
         }
 
         this.inputElement.value = hint;
+        this.inputElement.classList.add('hint-mode');
         this.inputElement.focus();
 
         // Disable hint button after use for this word
