@@ -76,6 +76,8 @@ const MIME_TYPES = {
     '.gif': 'image/gif',
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
+    '.txt': 'text/plain',
+    '.xml': 'application/xml',
 };
 
 // Load leaderboard from file on startup

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://spellcheck-vocabulary-game.onrender.com/sitemap.xml

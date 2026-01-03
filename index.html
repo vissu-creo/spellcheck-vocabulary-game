@@ -4,12 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexicon | Premium Spell-Check & Vocabulary</title>
+    <title>Lexicon | Spell Bee & Vocabulary Master Game</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Master your spelling and build vocabulary with Lexicon, the ultimate Spell Bee and spell-check game. Perfect for students and wordsmiths of all ages.">
+    <meta name="keywords"
+        content="spell bee game, spelling bee, spell check game, vocabulary game, learn english words, spelling practice, interactive word game, educational game">
+    <meta name="author" content="Lexicon Team">
+    <link rel="canonical" href="https://spellcheck-vocabulary-game.onrender.com/">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://spellcheck-vocabulary-game.onrender.com/">
+    <meta property="og:title" content="Lexicon | Spell Bee & Vocabulary Master Game">
+    <meta property="og:description"
+        content="Join the global leaderboard in the most interactive spelling practice game online. Expand your vocabulary instantly!">
+    <meta property="og:image" content="https://spellcheck-vocabulary-game.onrender.com/assets/og-image.png">
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Lexicon Spell Bee",
+      "url": "https://spellcheck-vocabulary-game.onrender.com/",
+      "description": "An interactive educational game for practicing spelling and expanding vocabulary for children and adults.",
+      "applicationCategory": "EducationalGame",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/leaderboard.css">
 </head>
 
 <body>
+    <!-- Slow-Motion Background Animation -->
+    <div id="letters-bg" class="letters-bg"></div>
     <!-- Username Modal -->
     <div id="username-modal" class="modal hidden">
         <div class="modal-content">
@@ -154,7 +191,8 @@
     </main>
 
     <script src="js/services/session-service.js"></script>
-    <script type="module" src="js/main.js?v=3"></script>
+    <script type="module" src="js/ui/bg-animation.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
