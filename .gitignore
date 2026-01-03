@@ -4,6 +4,8 @@ node_modules/
 debug_*.js
 test_*.js
 verify_*.js
+audit_*.js
+populate_*.js
 .gemini/
 .agent/
 start_game.bat

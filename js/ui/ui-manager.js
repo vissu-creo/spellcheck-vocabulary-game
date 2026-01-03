@@ -6,6 +6,14 @@ export class UIManager {
         this.loadingOverlay = document.getElementById('loading-overlay');
         this.hintButton = document.getElementById('hint-btn');
         this.levelButtons = document.querySelectorAll('.level-btn');
+        this.usernameModal = document.getElementById('username-modal');
+        this.startScreen = document.getElementById('start-screen');
+        this.gameArea = document.getElementById('game-area');
+        this.leaderboardPanel = document.getElementById('leaderboard-panel');
+        this.top10List = document.getElementById('top10-list');
+        this.yourRankDisplay = document.getElementById('your-rank-display');
+        this.levelBadge = document.getElementById('leaderboard-level-badge');
+
         this.initLevelSelection();
     }
 
@@ -35,7 +43,9 @@ export class UIManager {
     }
 
     updateStats(stats) {
-        this.scoreElement.textContent = stats.score;
+        if (this.scoreElement) {
+            this.scoreElement.textContent = stats.score;
+        }
     }
 
     prepareRound() {
@@ -132,5 +142,73 @@ export class UIManager {
     resetHintButton() {
         this.hintButton.disabled = false;
         this.hintButton.style.opacity = '1';
+    }
+
+    showUsernameModal() {
+        this.usernameModal.classList.remove('hidden');
+    }
+
+    hideUsernameModal() {
+        this.usernameModal.classList.add('hidden');
+    }
+
+    showStartScreen(show) {
+        if (show) this.startScreen.classList.remove('hidden');
+        else this.startScreen.classList.add('hidden');
+    }
+
+    showGameArea(show) {
+        if (show) this.gameArea.classList.remove('hidden');
+        else this.gameArea.classList.add('hidden');
+    }
+
+    showUsernameError(message) {
+        const err = document.getElementById('username-error');
+        if (err) {
+            err.textContent = message;
+            err.classList.remove('hidden');
+        }
+    }
+
+    updateLeaderboard(data) {
+        if (!data) return;
+
+        // Ensure we show the target level data
+        console.log(`Updating UI for ${data.level} leaderboard`);
+
+        // Update Top 10
+        if (data.top10) {
+            if (data.top10.length === 0) {
+                this.top10List.innerHTML = '<div class="loading-placeholder">No scores yet. Be the first!</div>';
+            } else {
+                this.top10List.innerHTML = data.top10.map(entry => `
+                    <div class="rank-entry">
+                        <span class="rank-position">#${entry.rank}</span>
+                        <span class="rank-username">${entry.username}</span>
+                        <span class="rank-score">${entry.score} pts</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Update Current User
+        if (data.currentUser) {
+            const user = data.currentUser;
+            const trendIcon = user.trend === 'up' ? '↑' : (user.trend === 'down' ? '↓' : '→');
+            const trendClass = user.trend === 'up' ? 'up' : (user.trend === 'down' ? 'down' : '');
+
+            if (this.yourRankDisplay) {
+                this.yourRankDisplay.innerHTML = `
+                    <span class="rank-position">#${user.rank}</span>
+                    <span class="rank-username">${user.username}</span>
+                    <span class="rank-score">${user.score} pts</span>
+                    <span class="rank-trend ${trendClass}">${trendIcon}</span>
+                `;
+            }
+        } else if (this.yourRankDisplay) {
+            this.yourRankDisplay.innerHTML = `
+                <div class="loading-placeholder">No active session for this level</div>
+            `;
+        }
     }
 }

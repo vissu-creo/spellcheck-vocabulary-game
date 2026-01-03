@@ -10,6 +10,11 @@ export class GameController {
         this.isRoundActive = false;
         this.isLoading = false;
         this.currentAudio = null; // Track playing audio
+        this.sessionService = null;
+    }
+
+    setSessionService(sessionService) {
+        this.sessionService = sessionService;
     }
 
     async startRound() {
@@ -80,8 +85,19 @@ export class GameController {
         this.uiManager.displayResult(result, this.currentWord, isCorrect);
 
         if (isCorrect) {
-            this.gameState.updateScore(10);
+            this.gameState.addScore(10);
             this.uiManager.updateStats(this.gameState.getStats());
+        }
+
+        // Update Backend Session & Leaderboard
+        if (this.sessionService && this.sessionService.isActive()) {
+            this.sessionService.submitAnswer(isCorrect).then(data => {
+                if (data) {
+                    this.sessionService.getLeaderboard().then(lbData => {
+                        this.uiManager.updateLeaderboard(lbData);
+                    });
+                }
+            });
         }
 
         this.isRoundActive = false;

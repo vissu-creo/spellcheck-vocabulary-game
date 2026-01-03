@@ -4,18 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexicon | Interactive Spell-Check & Vocabulary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
+    <title>Lexicon | Premium Spell-Check & Vocabulary</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/leaderboard.css">
 </head>
 
 <body>
+    <!-- Username Modal -->
+    <div id="username-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+            <h2>Enter Your Username</h2>
+            <p>Join the leaderboard and compete with other players!</p>
+            <div class="modal-input-group">
+                <input type="text" id="username-input" placeholder="Your username (3-20 chars)" maxlength="20"
+                    autocomplete="off">
+            </div>
+            <p id="username-error" class="error-text hidden">Name already taken. Try another!</p>
+            <button id="start-session-btn" class="primary-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                Continue
+            </button>
+        </div>
+    </div>
 
-    <main class="interaction-area">
+    <main id="main-container" class="main-container">
         <div id="start-screen" class="start-screen">
             <div class="start-content">
                 <div class="icon-container">
@@ -50,52 +72,89 @@
         </div>
 
         <div id="game-area" class="game-area hidden">
-            <div class="word-card">
-                <div class="audio-controls">
-                    <div class="controls-row">
-                        <button id="play-audio-btn" class="audio-btn" aria-label="Play Word Audio">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                            </svg>
-                        </button>
-                        <button id="hint-btn" class="hint-btn" title="Get a hint">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-lightbulb">
-                                <path
-                                    d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5" />
-                                <path d="M9 18h6" />
-                                <path d="M10 22h4" />
-                            </svg>
-                        </button>
+            <!-- Leaderboard Panel -->
+            <div id="leaderboard-panel" class="leaderboard-panel">
+                <div class="leaderboard-header">
+                    <h4>🏆 LEADERBOARD</h4>
+                </div>
+
+                <!-- Your Rank Section (shown first) -->
+                <div class="your-rank-section">
+                    <h4>⭐ YOUR RANK</h4>
+                    <div id="your-rank-display" class="rank-entry your-rank">
+                        <span class="rank-position">#1</span>
+                        <span class="rank-username">Loading...</span>
+                        <span class="rank-score">0 pts</span>
+                        <span class="rank-trend">→</span>
                     </div>
-                    <div class="audio-hint">Click to listen • Hint available</div>
                 </div>
 
-                <div class="input-group">
-                    <input type="text" id="word-input" placeholder="Type the word here..." autocomplete="off"
-                        spellcheck="false">
-                    <div class="input-underline"></div>
+                <!-- Top 10 Section -->
+                <div class="top10-section">
+                    <h4>🏆 TOP 10</h4>
+                    <div id="top10-list" class="top10-list">
+                        <div class="loading-placeholder">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">SCORE</span>
+                        <span id="current-score" class="stat-value">0</span>
+                    </div>
                 </div>
 
-                <div class="input-hint">Press <strong>Enter</strong> to submit</div>
-            </div>
+                <div class="word-card">
+                    <div class="audio-controls">
+                        <div class="controls-row">
+                            <button id="play-audio-btn" class="audio-btn" aria-label="Play Word Audio">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                            </button>
+                            <button id="hint-btn" class="hint-btn" title="Get a hint">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-lightbulb">
+                                    <path
+                                        d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5" />
+                                    <path d="M9 18h6" />
+                                    <path d="M10 22h4" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="audio-hint">Click to listen • Hint available</div>
+                    </div>
 
-            <div id="loading-overlay" class="loading-overlay hidden">
-                <div class="spinner"></div>
-                <p>Loading word...</p>
-            </div>
+                    <div class="input-group">
+                        <input type="text" id="word-input" placeholder="Type the word here..." autocomplete="off"
+                            spellcheck="false">
+                        <div class="input-underline"></div>
+                    </div>
 
-            <div id="results-container" class="results-container hidden">
-                <!-- Dynamic Content Will Be Injected Here -->
+                    <div class="input-hint">Press <strong>Enter</strong> to submit</div>
+                </div>
+
+                <div id="loading-overlay" class="loading-overlay hidden">
+                    <div class="spinner"></div>
+                    <p>Loading word...</p>
+                </div>
+
+                <div id="results-container" class="results-container hidden">
+                    <!-- Dynamic Content Will Be Injected Here -->
+                </div>
             </div>
         </div>
     </main>
 
-    <script type="module" src="js/main.js?v=2"></script>
+    <script src="js/services/session-service.js"></script>
+    <script type="module" src="js/main.js?v=3"></script>
 </body>
 
 </html>
