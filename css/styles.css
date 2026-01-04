@@ -102,7 +102,7 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     line-height: 1.6;
     overflow-x: hidden;
@@ -131,6 +131,8 @@ body::before {
     justify-content: center;
     align-items: center;
     min-height: 80vh;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 /* Premium Card Design */
@@ -633,4 +635,36 @@ body::before {
     60% {
         transform: translate3d(4px, 0, 0);
     }
+}
+
+/* App Footer - Immersive & Mobile Friendly */
+.app-footer {
+    width: 100%;
+    padding: 60px 20px 40px;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #6366f1;
+}
+
+.copyright {
+    color: #94a3b8;
+    font-size: 0.8rem;
 }
