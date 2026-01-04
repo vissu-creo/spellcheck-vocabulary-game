@@ -1,18 +1,19 @@
 # Lexicon: Premium Spelling & Vocabulary Game
 
-Lexicon is a polished, interactive web application designed to help children (and adults!) master spelling and expand their vocabulary in a calm, futuristic environment.
+Lexicon is a polished, interactive web application designed to help students and wordsmiths master English spelling and expand their vocabulary in a calm, immersive environment.
 
-![Lexicon Preview](https://raw.githubusercontent.com/vissu-creo/spellcheck-vocabulary-game/main/preview.png) *(Note: Add your own screenshot here!)*
+## ✨ Latest Features
 
-## ✨ Features
+- **Immersive Background**: A slow-motion, dynamic falling letters animation that adds a premium feel without distracting from gameplay.
+- **Live Leaderboard**: Real-time ranking system to see how you compare with other active players (per session).
+- **IPA Phonetics**: View word pronunciations using the International Phonetic Alphabet (IPA) fetched directly from high-trust linguistic APIs.
+- **Smart Vocabulary Engine**: 
+  - Dynamic replenishment batches (100 words at a time).
+  - Multi-source metadata (definitions, examples, and synonyms).
+  - Intelligent session-based filtering to prevent word repetition.
+- **Premium Audio**: Integrated audio pronunciations for every word.
 
-- **Premium Audio**: High-quality text-to-speech using Google Translate TTS with browser fallback.
-- **Rich Word Examples**: Real-world usage examples for every word, using a smart fallback system (External APIs + Local Dictionary).
-- **Comprehensive Synonyms**: Aggregated synonyms from multiple sources (Dictionary API + Datamuse) to provide deep context.
-- **Organic UI**: A subtle, wavering animated background with glassmorphism effects for a premium, non-distracting experience.
-- **Session Tracking**: Intelligent word selection that prevents repetition during a single session.
-
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or higher)
@@ -23,7 +24,7 @@ Lexicon is a polished, interactive web application designed to help children (an
    git clone https://github.com/vissu-creo/spellcheck-vocabulary-game.git
    cd spellcheck-vocabulary-game
    ```
-2. Install dependencies (optional, as we use native fetch):
+2. Install dependencies (standard Node.js setup):
    ```bash
    npm install
    ```
@@ -33,12 +34,13 @@ Lexicon is a polished, interactive web application designed to help children (an
    ```bash
    npm start
    ```
-2. Open your browser to `http://localhost:8090`.
+2. Open your browser to `http://localhost:8095`.
 
 ## 🛠️ Tech Stack
-- **Frontend**: Vanilla HTML5, CSS3 (Custom Animations & Glassmorphism), JavaScript (ES6+).
-- **Backend**: Node.js (Native HTTP module).
-- **APIs**: Free Dictionary API, Datamuse API, Google Translate TTS.
+- **Frontend**: Vanilla HTML5, CSS3 (Immersive Layers & Glassmorphism), Modern JS.
+- **Backend**: Node.js (Lightweight architecture).
+- **External Data**: DictionaryAPI.dev, Datamuse API.
+- **Hosting**: Optimized for Render Deployment.
 
 ## 📝 License
 This project is licensed under the ISC License.
